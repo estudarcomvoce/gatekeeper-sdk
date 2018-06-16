@@ -1,9 +1,8 @@
 import { User } from '../models';
 import { HttpInterceptor, HttpOptions } from '../base';
-import { Observable, Observer, StorageUtil } from '../utils';
+import { Observable, Observer, StorageUtil, LocalStorage } from '../utils';
 import { OAuthWebService, OAuthWebServiceOptions, UserWebService } from '../services';
 import { SessionCredentialsInterceptor, SessionUnauthorizedInterceptor } from './interceptors';
-import { LocalStorage } from '../utils/Storage';
 
 export interface SessionOptions {
   http?: HttpOptions;
