@@ -1,14 +1,14 @@
-import { BaseModel, BaseModelSchema } from '../base';
-import OAuthCredentials from './OAuthCredentials';
+import { BaseModel, BaseModelSchema } from "../base";
+import OAuthCredentials from "./OAuthCredentials";
 
 export enum UserStatus {
-  ACTIVE = 'active',
-  INACTIVE = 'inactive',
+  ACTIVE = "active",
+  INACTIVE = "inactive"
 }
 
 export enum UserRole {
-  ROOT = 'root',
-  USER = 'user',
+  ROOT = "root",
+  USER = "user"
 }
 
 export interface UserSchema extends BaseModelSchema {
@@ -39,13 +39,14 @@ export default class User extends BaseModel implements UserSchema {
     this.password = data.password;
     this.role = data.role;
     this.status = data.status;
-    this.virtual = (data.credentials && data.credentials.virtual) ?
-      data.credentials.virtual :
-      (data.virtual || this.virtual);
+    this.virtual =
+      data.credentials && data.credentials.virtual ? data.credentials.virtual : data.virtual || this.virtual;
 
     // Relationship attributes enforcing
-    this.credentials = (data.credentials ? (
-      data.credentials instanceof OAuthCredentials ? data.credentials : new OAuthCredentials(data.credentials)
-    ) : undefined);
+    this.credentials = data.credentials
+      ? data.credentials instanceof OAuthCredentials
+        ? data.credentials
+        : new OAuthCredentials(data.credentials)
+      : undefined;
   }
 }

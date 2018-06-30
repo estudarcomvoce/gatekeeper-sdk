@@ -1,9 +1,9 @@
-import { User } from '../models';
-import { HttpInterceptor, HttpOptions } from '../base';
-import { Observable, Observer, StorageUtil } from '../utils';
-import { OAuthWebService, OAuthWebServiceOptions, UserWebService } from '../services';
-import { SessionCredentialsInterceptor, SessionUnauthorizedInterceptor } from './interceptors';
-import { LocalStorage } from '../utils/storage';
+import { HttpInterceptor, HttpOptions } from "../base";
+import { User } from "../models";
+import { OAuthWebService, OAuthWebServiceOptions, UserWebService } from "../services";
+import { Observable, Observer, StorageUtil } from "../utils";
+import { LocalStorage } from "../utils/storage";
+import { SessionCredentialsInterceptor, SessionUnauthorizedInterceptor } from "./interceptors";
 
 export interface SessionOptions {
   http?: HttpOptions;
@@ -22,18 +22,18 @@ export default class Session {
   oauthWebService: OAuthWebService;
   _interceptors: HttpInterceptor[] = [];
 
-  public static EVENT_SESSION_CHANGED = 'SESSION_CHANGED';
+  public static EVENT_SESSION_CHANGED = "SESSION_CHANGED";
 
   protected static instance: Session;
 
   constructor(public options: SessionOptions) {
     this.observable = new Observable();
-    this.storage = options.storage || new StorageUtil('session', new LocalStorage(window));
+    this.storage = options.storage || new StorageUtil("session", new LocalStorage(window));
 
     // Prepare session interceptors
     this._interceptors = [
       new SessionCredentialsInterceptor(this),
-      new SessionUnauthorizedInterceptor(() => this.destroy()),
+      new SessionUnauthorizedInterceptor(() => this.destroy())
     ];
 
     // TODO: Service instance or config are required, validate this
@@ -41,7 +41,7 @@ export default class Session {
     this.userWebService = options.userWebService || UserWebService.getInstance({ session: this, ...options.http });
 
     // Fetch session in startup by default
-    if (options.autoFetch as any !== false) {
+    if ((options.autoFetch as any) !== false) {
       this.fetch();
     }
   }
@@ -93,7 +93,7 @@ export default class Session {
     this.current = user;
 
     // Save in local storage
-    await this.storage.put('session', this.current);
+    await this.storage.put("session", this.current);
 
     // At last, notify observers of this change
     if (!options || (options && options.notify)) {
@@ -106,7 +106,7 @@ export default class Session {
    * Fetches the currently stored session.
    */
   protected async fetch() {
-    this.current = await this.storage.get('session');
+    this.current = await this.storage.get("session");
 
     await this.observable.notify(Session.EVENT_SESSION_CHANGED, this.current);
 
@@ -130,7 +130,7 @@ export default class Session {
       try {
         await this.oauthWebService.revoke(this.current.credentials.accessToken);
       } catch (exception) {
-        console.warn('SESSION: Could not destroy current session', exception);
+        console.warn("SESSION: Could not destroy current session", exception);
       }
     }
 
@@ -142,11 +142,10 @@ export default class Session {
    *
    * @param data The user credentials
    */
-  public async password(data: { username: string, password: string }): Promise<User> {
+  public async password(data: { username: string; password: string }): Promise<User> {
     const oauth = await this.oauthWebService.password(data);
 
     if (oauth.accessToken) {
-
       try {
         const user = await this.userWebService.me(oauth);
         return this.register(new User({ ...user, credentials: oauth }));
@@ -166,7 +165,6 @@ export default class Session {
     const oauth = await this.oauthWebService.clientCredentials();
 
     try {
-
       if (oauth.accessToken && !oauth.virtual) {
         const user = await this.userWebService.me(oauth);
         return this.register(user);
@@ -174,7 +172,6 @@ export default class Session {
       if (oauth.accessToken) {
         return this.register(new User({ id: oauth.userId, credentials: oauth }));
       }
-
     } catch (error) {
       error.credentials = oauth;
       throw error;

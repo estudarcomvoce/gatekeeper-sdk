@@ -1,23 +1,23 @@
-import * as hat from 'hat';
-import { User, OAuthCredentials } from '../../lib';
+import * as hat from "hat";
+import { OAuthCredentials, User } from "../../lib";
 
 const TEST_CREDENTIALS = {
-  token_type: 'bearer',
+  token_type: "bearer",
   access_token: hat(),
   refresh_token: hat(),
   user_id: hat(),
-  expires_in: 3600,
+  expires_in: 3600
 };
 
 const TEST_USER = {
   _id: hat(),
-  name: 'Test User',
-  email: 'user@test.com',
-  role: 'user',
+  name: "Test User",
+  email: "user@test.com",
+  role: "user"
 };
 
-describe('lib.models.User', () => {
-  it('should instantiate properly without credentials', async () => {
+describe("lib.models.User", () => {
+  it("should instantiate properly without credentials", async () => {
     const user = new User({ ...TEST_USER });
 
     expect(user).toBeTruthy();
@@ -27,7 +27,7 @@ describe('lib.models.User', () => {
     expect(user.credentials).toBeUndefined();
   });
 
-  it('should instantiate properly with credentials instance', async () => {
+  it("should instantiate properly with credentials instance", async () => {
     const credentials = new OAuthCredentials(TEST_CREDENTIALS);
     const user = new User({ credentials, ...TEST_USER });
 
@@ -38,7 +38,7 @@ describe('lib.models.User', () => {
     expect(user.credentials).toBeInstanceOf(OAuthCredentials);
   });
 
-  it('should instantiate properly with credentials raw data', async () => {
+  it("should instantiate properly with credentials raw data", async () => {
     const user = new User({ credentials: TEST_CREDENTIALS as any, ...TEST_USER });
 
     expect(user).toBeTruthy();

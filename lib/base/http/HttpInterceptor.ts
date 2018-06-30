@@ -1,4 +1,4 @@
-import { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 export interface HttpInterceptor {
   request(request: AxiosRequestConfig): Promise<AxiosRequestConfig>;
