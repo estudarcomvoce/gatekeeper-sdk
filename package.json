@@ -11,7 +11,7 @@
   "scripts": {
     "build": "yarn run -s clean && tsc",
     "clean": "rimraf ./dist/",
-    "test": "yarn run -s lint && jest --config jest.json",
+    "test": "jest --config jest.json",
     "lint": "tslint --project . --fix && prettier --write lib/**/*.ts && prettier --write tests/**/*.ts",
     "docs": "./scripts/docs.sh",
     "start": "$(cd docs/ && serve -p ${PORT:-3030})",
@@ -30,7 +30,6 @@
       "prettier --write",
       "git add"
     ]
-  },
   },
   "dependencies": {
     "axios": "^0.17.1",
