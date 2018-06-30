@@ -1,7 +1,7 @@
 {
   "name": "gatekeeper-sdk",
   "version": "1.0.0",
-  "main": "./dist/index.js",
+  "main": "dist/index.js",
   "author": "Luis Brito <luis@nxtep.io>",
   "license": "MIT",
   "typings": "./dist/types/index.d.ts",
