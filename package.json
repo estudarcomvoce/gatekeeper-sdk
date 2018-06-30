@@ -25,7 +25,7 @@
     }
   },
   "lint-staged": {
-    "{lib,tests}/**/*.{ts,tsx}": [
+    "{lib,tests}/**/*.ts": [
       "tslint --fix",
       "prettier --write",
       "git add"
